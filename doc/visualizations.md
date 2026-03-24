@@ -42,9 +42,13 @@ If the sweep was run with **`--no-profile`**, RSS plots are skipped (or panels s
 
 For the repo (without relying on gitignored `results/`), the same PNGs from the last local sweep are copied to [reports/figures/](reports/figures/).
 
-### Dashboard (2×2)
+### Timings dashboard (2×2)
 
-![Sweep dashboard](reports/figures/sweep_dashboard.png)
+![Sweep dashboard — timings](reports/figures/sweep_dashboard.png)
+
+### Disk & RSS dashboard (2×2)
+
+![Resources dashboard — disk and RSS load peaks](reports/figures/resources_dashboard.png)
 
 ### Scale — total vs N
 
@@ -65,6 +69,22 @@ For the repo (without relying on gitignored `results/`), the same PNGs from the 
 ### k — total time
 
 ![k total](reports/figures/k_total.png)
+
+### Scale — disk (MiB) vs N
+
+![Scale disk](reports/figures/scale_disk_mib.png)
+
+### Dimension — disk (MiB) vs d
+
+![Dimension disk](reports/figures/dimension_disk_mib.png)
+
+### Scale — RSS peaks vs N
+
+![Scale RSS](reports/figures/scale_rss_mib.png)
+
+### Dimension — RSS peaks vs d
+
+![Dimension RSS](reports/figures/dimension_rss_mib.png)
 
 ---
 
