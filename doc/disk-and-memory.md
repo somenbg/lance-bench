@@ -11,7 +11,7 @@ The harness can record **on-disk footprint** and **approximate RAM (RSS) peaks**
 | Backend | What we count |
 | ------- | ------------- |
 | **Parquet** | Size of `corpus.parquet` (single file; Zstd-compressed columnar data). |
-| **Lance** | Sum of **all file sizes** under the LanceDB directory (e.g. `*.lance` fragments, manifests, sidecars). |
+| **Lance** | Sum of **all file sizes** under the Lance dataset directory (e.g. `*.lance` fragments, manifests, sidecars). |
 
 This answers: **“How much disk does each format use for this table?”** It does not include temp files elsewhere on the volume.
 

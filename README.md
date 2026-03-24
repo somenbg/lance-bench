@@ -1,6 +1,6 @@
 # lance-bench
 
-Benchmark harness that compares **Apache Parquet** vs **Lance** (via **LanceDB**) for the same synthetic or prepared corpora: time to **load** embeddings into memory, run identical **L2 brute-force kNN**, and optionally record **on-disk size** and **RSS peaks**. Supports **multi-scenario sweeps** (scale, dimension, query batch, **k**), **Markdown reports**, **matplotlib plots**, and **repeated sweeps** with mean ± sample stdev.
+Benchmark harness that compares **Apache Parquet** vs **Lance** using the **[pylance](https://github.com/lance-format/lance)** Python SDK for the same synthetic or prepared corpora: time to **load** embeddings into memory, run identical **L2 brute-force kNN**, and optionally record **on-disk size** and **RSS peaks**. Supports **multi-scenario sweeps** (scale, dimension, query batch, **k**), **Markdown reports**, **matplotlib plots**, and **repeated sweeps** with mean ± sample stdev.
 
 Longer product/research context: [PLAN.md](PLAN.md).
 
@@ -9,7 +9,7 @@ Longer product/research context: [PLAN.md](PLAN.md).
 ## Requirements
 
 - **Python 3.10+**
-- Dependencies are declared in [pyproject.toml](pyproject.toml) (`lancedb`, `pyarrow`, `numpy`, `typer`, `matplotlib`, `psutil`).
+- Dependencies are declared in [pyproject.toml](pyproject.toml) (`pylance`, `pyarrow`, `numpy`, `typer`, `matplotlib`, `psutil`).
 
 ---
 

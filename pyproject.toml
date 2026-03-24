@@ -1,11 +1,11 @@
 [project]
 name = "lance-bench"
 version = "0.1.0"
-description = "Parquet vs Lance first benchmark harness"
+description = "Parquet vs Lance (pylance) first benchmark harness"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "lancedb>=0.14.0",
+    "pylance>=3.0.0",
     "matplotlib>=3.8.0",
     "numpy>=1.24.0",
     "psutil>=5.9.0",

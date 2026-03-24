@@ -1,4 +1,4 @@
-"""Write / read Lance table with the same logical schema as Parquet."""
+"""Write / read Lance columnar dataset (pylance from https://github.com/lance-format/lance)."""
 
 from __future__ import annotations
 
@@ -9,21 +9,24 @@ import numpy as np
 from lance_bench.parquet_backend import as_fixed_size_list, embedding_table
 
 
-def write_corpus_lance(uri: Path, table_name: str, ids: np.ndarray, embeddings: np.ndarray) -> None:
+def write_corpus_lance(uri: Path, _table_name: str, ids: np.ndarray, embeddings: np.ndarray) -> None:
+    """Write corpus as a Lance dataset under ``uri`` (directory).
+
+    ``_table_name`` is ignored; it remains in the signature so call sites match the old
+    LanceDB-oriented API (one named table per DB directory).
+    """
+    from lance.dataset import write_dataset
+
     uri.mkdir(parents=True, exist_ok=True)
-    import lancedb
-
     table = embedding_table(ids, embeddings)
-    db = lancedb.connect(str(uri))
-    db.create_table(table_name, data=table, mode="overwrite")
+    write_dataset(table, str(uri), mode="overwrite", schema=table.schema)
 
 
-def load_corpus_matrix(uri: Path, table_name: str) -> tuple[np.ndarray, np.ndarray]:
-    import lancedb
+def load_corpus_matrix(uri: Path, _table_name: str) -> tuple[np.ndarray, np.ndarray]:
+    from lance import LanceDataset
 
-    db = lancedb.connect(str(uri))
-    t = db.open_table(table_name)
-    arrow_table = t.to_arrow()
+    ds = LanceDataset(str(uri))
+    arrow_table = ds.to_table(columns=["id", "embedding"])
     ids = arrow_table["id"].to_numpy(zero_copy_only=False)
     emb_col = as_fixed_size_list(arrow_table["embedding"])
     values = emb_col.values.to_numpy(zero_copy_only=False)

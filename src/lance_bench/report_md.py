@@ -113,7 +113,7 @@ def generate_report_md(
     if show_disk:
         lines.append(
             "**On-disk size:** Parquet = `corpus.parquet` file size; Lance = sum of file sizes under "
-            "the LanceDB directory (fragments + sidecars). Comparable logical row counts, different "
+            "the Lance dataset directory (fragments + sidecars). Comparable logical row counts, different "
             "physical layout and compression."
         )
         lines.append("")

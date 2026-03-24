@@ -1,6 +1,6 @@
 # First benchmark: Parquet vs Lance
 
-This document describes the **initial harness** added to compare reading the same logical corpus from **Parquet** versus **Lance** (via LanceDB), then running the **same** brute-force k-nearest-neighbor search on the materialized embedding matrix.
+This document describes the **initial harness** added to compare reading the same logical corpus from **Parquet** versus **Lance** (via [pylance](https://github.com/lance-format/lance)), then running the **same** brute-force k-nearest-neighbor search on the materialized embedding matrix.
 
 It is intentionally narrow: one schema, one distance metric (L2), one search implementation, explicit timings for **load** vs **search** so results stay interpretable.
 
@@ -10,7 +10,7 @@ It is intentionally narrow: one schema, one distance metric (L2), one search imp
 
 ### Packaging and layout
 
-- **`pyproject.toml`** — Python 3.10+, dependencies (`lancedb`, `pyarrow`, `numpy`, `typer`), Hatchling wheel over `src/lance_bench`, console entry point **`lance-bench`**.
+- **`pyproject.toml`** — Python 3.10+, dependencies (`pylance`, `pyarrow`, `numpy`, `typer`), Hatchling wheel over `src/lance_bench`, console entry point **`lance-bench`**.
 - **`src/lance_bench/`** — importable package with small, single-purpose modules (see below).
 - **`.gitignore`** — ignores `.venv/`, `data/`, `results/`, build artifacts so generated corpora and timing JSON do not clutter version control.
 
@@ -23,7 +23,7 @@ Both backends use the same Apache Arrow shape before persistence:
 | `id`        | `int64`                      |
 | `embedding` | `fixed_size_list<float32>`   |
 
-`parquet_backend.embedding_table()` builds this `pa.Table` once; Parquet writes it with Zstd compression, Lance ingests the same table through `lancedb.create_table`.
+`parquet_backend.embedding_table()` builds this `pa.Table` once; Parquet writes it with Zstd compression, Lance ingests the same table through `lance.dataset.write_dataset`.
 
 ### Modules
 
@@ -31,7 +31,7 @@ Both backends use the same Apache Arrow shape before persistence:
 | -------------------- | -------------- |
 | `dataset.py`         | Seeded synthetic corpus and query vectors (`float32`). |
 | `parquet_backend.py` | `embedding_table`, Parquet write/read, `as_fixed_size_list()` to normalize Arrow list columns (including **chunked** columns after Parquet read). |
-| `lance_backend.py`   | Lance write from the same `pa.Table`, read via `to_arrow()` and the same coalescing helper. |
+| `lance_backend.py`   | Lance write from the same `pa.Table`, read via `LanceDataset.to_table()` and the same coalescing helper. |
 | `bruteforce.py`      | Batched L2 kNN: builds an `(Q, N)` distance matrix with one matrix multiply and returns top-`k` indices per query. |
 | `benchmark.py`       | Times **load** (path → dense `(N, d)` matrix) and **search** (kNN on that matrix); writes JSON rows (`BenchResult`). |
 | `cli.py`             | Typer CLI: `prepare` and `run`. |
@@ -40,7 +40,7 @@ Both backends use the same Apache Arrow shape before persistence:
 
 1. **`lance-bench prepare`** — Generates a synthetic corpus and writes:
    - `data/corpus.parquet`
-   - `data/lance/` with LanceDB table `corpus`
+   - `data/lance/` as a pylance / Lance-format dataset directory
 2. **`lance-bench run`** — Loads each corpus into memory, runs the shared kNN on the same query batch, prints and writes `results/bench.json` (path configurable with `--results-json`).
 
 Example:

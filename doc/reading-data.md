@@ -100,18 +100,17 @@ print(dim)
 
 ---
 
-## 3. `data/lance/` (LanceDB)
+## 3. `data/lance/` (Lance format, pylance)
 
-**What it is:** Lance on-disk dataset opened as a LanceDB database directory. Table name: **`corpus`**. Same logical content as `corpus.parquet` when both are produced by the same `prepare` run.
+**What it is:** A Lance columnar dataset directory written by [pylance](https://github.com/lance-format/lance) (`lance.dataset.write_dataset`). Same logical content as `corpus.parquet` when both are produced by the same `prepare` run. The CLI still passes a legacy table name (`corpus`) to shared helpers; native Lance stores one dataset per directory, not a named table inside a database.
 
-**Inspect with LanceDB:**
+**Inspect with pylance:**
 
 ```python
-import lancedb
+from lance import LanceDataset
 
-db = lancedb.connect("data/lance")
-table = db.open_table("corpus")
-arrow = table.to_arrow()
+ds = LanceDataset("data/lance")
+arrow = ds.to_table(columns=["id", "embedding"])
 print(arrow.schema)
 print("rows:", arrow.num_rows)
 
@@ -121,7 +120,7 @@ for i in range(min(2, arrow.num_rows)):
     print(row_id, len(vec), vec[:3])
 ```
 
-**Note:** Fragments under `data/lance/` (e.g. `*.lance`) are Lance’s internal layout. Prefer **LanceDB / Lance APIs** for reading rather than editing files manually.
+**Note:** Fragments under `data/lance/` (e.g. `*.lance`) are Lance’s internal layout. Prefer **pylance** (`LanceDataset`, scanners) for reading rather than editing files manually.
 
 ---
 

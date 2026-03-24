@@ -47,7 +47,7 @@ def prepare(
     write_corpus_parquet(pq_path, ids, emb)
     write_corpus_lance(lance_dir, "corpus", ids, emb)
     typer.echo(f"Parquet: {pq_path}")
-    typer.echo(f"Lance:   {lance_dir} (table corpus)")
+    typer.echo(f"Lance:   {lance_dir} (pylance dataset)")
     if show_sizes:
         pq_b = file_size_bytes(pq_path)
         la_b = dir_tree_size_bytes(lance_dir)

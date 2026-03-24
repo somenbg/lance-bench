@@ -14,7 +14,7 @@ Each scenario loads the full corpus from **Parquet** vs **Lance** into a dense `
 
 **Interpretation:** Differences in **search** time should be small (same NumPy kernel). Differences in **load** reflect PyArrow Parquet decode vs Lance scan/materialization in this harness (local disk, warm-ish cache after first touch in a trial sequence).
 
-**On-disk size:** Parquet = `corpus.parquet` file size; Lance = sum of file sizes under the LanceDB directory (fragments + sidecars). Comparable logical row counts, different physical layout and compression.
+**On-disk size:** Parquet = `corpus.parquet` file size; Lance = sum of file sizes under the Lance dataset directory (fragments + sidecars). Comparable logical row counts, different physical layout and compression.
 
 ## Results
 
