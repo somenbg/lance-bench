@@ -45,7 +45,7 @@ Outputs: `data/corpus.parquet`, `data/lance/`, and `results/bench.json`.
 ### Full scenario sweep (recommended for comparisons)
 
 ```bash
-# Full grid (~12 scenarios), 2 inner trials, report + default profiling
+# Full grid (15 scenarios; scale up to N=1M), 2 inner trials, report + default profiling
 .venv/bin/lance-bench sweep
 
 # Same, plus PNG plots

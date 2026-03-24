@@ -62,7 +62,7 @@ def build_scenarios(quick: bool) -> list[Scenario]:
         add("k", "k_n50k_nq256_k50", 50_000, 128, 256, 50)
         return out
 
-    for n in (5_000, 20_000, 50_000, 100_000):
+    for n in (5_000, 20_000, 50_000, 100_000, 200_000, 500_000, 1_000_000):
         add("scale", f"scale_n{n}_d128_nq256_k10", n, 128, 256, 10)
     for d in (128, 384, 768):
         add("dimension", f"dim_d{d}_n50k_nq256_k10", 50_000, d, 256, 10)

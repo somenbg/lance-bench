@@ -11,7 +11,7 @@ The **`lance-bench sweep`** command runs a **grid of scenarios** to compare Parq
 python3 -m venv .venv
 .venv/bin/pip install -e .
 
-# Full sweep (default: 12 scenarios, 2 trials each → median in report)
+# Full sweep (default: 15 scenarios, 2 trials each → median in report; scale includes N up to 1M)
 .venv/bin/lance-bench sweep
 
 # Smaller grid for CI or smoke tests
@@ -47,12 +47,14 @@ Defined in `lance_bench/sweep.py` (`build_scenarios`).
 
 | Group | Varies | Fixed (full mode) |
 | ----- | ------ | ----------------- |
-| **scale** | N ∈ {5k, 20k, 50k, 100k} | d=128, Q=256, k=10 |
+| **scale** | N ∈ {5k, 20k, 50k, 100k, 200k, 500k, **1M**} | d=128, Q=256, k=10 |
 | **dimension** | d ∈ {128, 384, 768} | N=50k, Q=256, k=10 |
 | **queries** | Q ∈ {64, 256, 1024} | N=50k, d=128, k=10 |
 | **k** | k ∈ {10, 50} | N=50k, d=128, Q=256 |
 
 **Quick mode** uses a subset (7 scenarios) with smaller N and fewer dimensions.
+
+**Large N:** At **N=1M** and **d=128**, the dense corpus matrix alone is about **512 MiB** `float32` per load, plus queries and temporaries — ensure **RAM** and **`data/sweep/`** disk space before running a full sweep.
 
 Corpora are **deterministic** for a given `(N, d, corpus_seed)` (default seed `42`). Query vectors differ per **trial** using a stable CRC-based offset from `scenario_id` so repeats are comparable without identical queries across scenarios.
 
